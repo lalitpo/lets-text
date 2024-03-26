@@ -39,17 +39,23 @@
 
 The project is a backend of a messaging application. It sends messages from one user to another user. 
  
+Below functionalities are implemented in the project:
+1. As a non-user, I can create my account by providing my nickname (nicknames should be unique)
+2. As a user, I can send a message to another user identified by his id you cannot send a message to yourself
+3. As a user, I can view all messages that I received
+4. As a user, I can view all messages that I sent
+5. As a user, I can view all messages received from a particular user
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 ## Built With
 
-[![My Skills](https://skillicons.dev/icons?i=java)](https://www.python.org/)
+[![My Skills](https://skillicons.dev/icons?i=java)](https://www.oracle.com/java/)
 [![My Skills](https://skillicons.dev/icons?i=spring)](https://www.spring.io/)
 [![My Skills](https://skillicons.dev/icons?i=postgres)](https://www.postgresql.org/)
 [![My Skills](https://skillicons.dev/icons?i=kafka)](https://kafka.apache.org/)
+[![My Skills](https://skillicons.dev/icons?i=docker)](https://www.docker.com//)
+
 
 
 
