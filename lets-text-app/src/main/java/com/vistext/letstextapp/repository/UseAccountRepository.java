@@ -1,9 +1,7 @@
 package com.vistext.letstextapp.repository;
 
-import org.springframework.stereotype.Repository;
+import com.vistext.letstextapp.model.User;
+import org.springframework.data.repository.CrudRepository;
 
-@Repository
-public class UseAccountRepository {
-
-
+public interface UseAccountRepository extends CrudRepository<User, Long> {
 }

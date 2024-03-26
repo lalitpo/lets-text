@@ -1,10 +1,10 @@
-package com.vistext.letstextapp.infrastructure;
+package com.vistext.letstextapp.externals;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class PostgreDBConnection {
+public class PostgresDBConnection {
 
     private static final String URL = "jdbc:postgresql://localhost:5432/your_database";
     private static final String USERNAME = "your_username";
@@ -12,7 +12,7 @@ public class PostgreDBConnection {
 
     private static Connection connection;
 
-    private PostgreDBConnection() {
+    private PostgresDBConnection() {
         // Private constructor to prevent instantiation
     }
 
