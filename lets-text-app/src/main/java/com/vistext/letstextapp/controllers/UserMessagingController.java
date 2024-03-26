@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @RestController
 @RequestMapping("/messages")
 public class UserMessagingController {
@@ -14,16 +15,15 @@ public class UserMessagingController {
     @Autowired
     private UserMessagingService messageService;
 
-    @PostMapping("/send/{userId}")
-    public ResponseEntity<String> sendMessage(@PathVariable String userId, @RequestBody String message) {
+    @PostMapping("/sendMessage")
+    public ResponseEntity<String> sendMessage(@RequestBody Message message) {
         try {
-            messageService.sendMessage(userId, message);
+            messageService.sendMessage(message);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Message sending failed");
+            return ResponseEntity.badRequest().body("Message sending failed : " + e.getMessage());
         }
         return ResponseEntity.ok("Message sent successfully");
     }
-
 
     @GetMapping("/allsent/{userId}")
     public ResponseEntity<List<Message>> getSentMessages(@PathVariable String userId) {

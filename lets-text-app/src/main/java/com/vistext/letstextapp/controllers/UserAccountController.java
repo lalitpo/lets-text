@@ -18,10 +18,10 @@ public class UserAccountController {
 
     @PostMapping("/create")
     public ResponseEntity<String> createUserAccount(@RequestBody User user) {
-        try{
+        try {
             userAccountService.createUserAccount(user);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("User account creation failed");
+            return ResponseEntity.badRequest().body("User account creation failed : " + e.getMessage());
         }
         return ResponseEntity.ok("User account created successfully");
     }
