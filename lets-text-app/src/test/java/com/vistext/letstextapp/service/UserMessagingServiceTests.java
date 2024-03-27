@@ -99,7 +99,7 @@ class UserMessagingServiceTests {
     }
 
     @Test
-    void whenSenderExistsAndReceiverDoesNotExistsThenThrowsException() throws Exception {
+    void whenSenderExistsAndReceiverDoesNotExistsThenThrowsException() {
         Message message = new Message();
         message.setSenderId(TEST_USER_1);
         message.setReceiverId(TEST_USER_3);
