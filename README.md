@@ -54,59 +54,90 @@ Below functionalities are implemented in the project:
 [![My Skills](https://skillicons.dev/icons?i=spring)](https://www.spring.io/)
 [![My Skills](https://skillicons.dev/icons?i=postgres)](https://www.postgresql.org/)
 [![My Skills](https://skillicons.dev/icons?i=kafka)](https://kafka.apache.org/)
-[![My Skills](https://skillicons.dev/icons?i=docker)](https://www.docker.com//)
-
-
+[![My Skills](https://skillicons.dev/icons?i=docker)](https://www.docker.com/)
+[![My Skills](https://skillicons.dev/icons?i=maven)](https://maven.apache.org/)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 ## Getting Started
 To correctly import and run this project locally, please follow below guidelines and instructions for smooth development process.
 
 ### Prerequisites
 As mentioned above in the "Built with" section, please have Java installed on your system.
-You can use [homebrew](https://brew.sh) or straightforward Installation for both [Python](https://www.python.org/) as mentioned on their homepage.
+You can use [homebrew](https://brew.sh) or straightforward Installation from their respective website's homepage.
 
-MATLAB comes with its own tool called [MATLAB](https://matlab.mathworks.com) which needs to be a licensed version.
-You can have it for free if you're registered with a University or your workplace has its licensed copy.
-
-Python can be run and programmed on any IDE like [IntelliJ](https://www.jetbrains.com/idea/), [PyCharm](https://www.jetbrains.com/pycharm/), [VS Code](https://code.visualstudio.com), etc.
+You can use any IDE like [IntelliJ](https://www.jetbrains.com/idea/) [VS Code](https://code.visualstudio.com), etc.
 
 ### Installation
 
 Below is an example of how you can set up the project on your local machine.
 
-1. For python packages and libraries, refer to the requirements.txt to install all the required packages.
-
-   Note : psycopg2 is required to connect to the PostgreSQL database. However, psycopg2 is not available anymore and you will find compile time error.
-   Please install psycopg2-binary instead using pip/pip3 command.
+1. In your favourite IDE, import/clone the project.
+2. Build the project using the following command
 
     ```
-    pip3 install psycopg2-binary
+    mvn clean install
+    ```
+3. Run docker containers for PostgreSQL database and Kafka Messaging Queue system.
+   Docker containers for each of them are configured in docker-compose.yml file at
+   lets-text-infra/docker/docker-compose.yml location.
+
+    ```
+    docker-compose -f lets-text-infra/docker/docker-compose.yml up
     ```
 
-2. Install [PostgreSQL](https://www.postgresql.org) on your machine for the database. You don't need an altogether a different UI to run queries because your IDE(IntelliJ, VS Code, etc.) will directly give you plugins to access them directly from the IDE.
+4. Install [PostgreSQL](https://www.postgresql.org) on your machine for the database. You don't need an altogether a
+   different UI to run queries because your IDE(IntelliJ, VS Code, etc.) will directly give you plugins to access them
+   directly from the IDE.
    However, in case, you want a separate UI for it, use [pgAdmin](https://www.pgadmin.org)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+5. Run the application by running file : LetsTextAppApplication.java located at
+   lets-text-app/src/main/java/com/vistext/letstextapp/LetsTextAppApplication.java
 
-## Usage
+   1. The application will be running on port 8080. You can access the application using the following URL:
 
-1. The athlete ID for which the biking ride activities needs to be collected, must be added in resources/pro-athlete-id.txt
-2. The year and week number for which the data needs to be collected must be added in resources/application-config.properties
-3. The database credentials must be added in resources/db-config.properties
-4. The credentials for the user login to Strava must be added in resources/strava-config.properties.
-4. Run the application using the following command
+       ```
+       http://localhost:8080
+       ```
 
-    ```
-    python3 DataCollectRunner.py
-    ```
+   2. In your favourite REST API client, like [Postman](https://www.postman.com/), you can test below REST APIs to test
+      the functionalities of the application.
+   3. Below are the sample requests for the functionalities using userNickname as 'jd1' and receiverId as 'jd2'. You can
+      replace these values with the values you want to test.
 
-5. The model are present in models folder in HR_Model.mlx which needs to be run in MATLAB.
-6. Model results can be analysed on MATLAB or src/services/ModelAnalysis.ipynb
+           ```
+           POST http://localhost:8080/users/create
+           {
+               "userNickName": "jd1",
+               "userName": "John Doe2",
+               "userPhoneNumber": 9764066736
+           }
+           ```
+           ```
+           ```
+           POST http://localhost:8080/messages/sendMessage
+           {
+               "senderId": "jd1",
+               "receiverId": "jd2",
+               "messageContent": "Hello. How are you?",
+               "messageSentTime": "2024-03-26T10:16:35Z"
+           }
+           ```
+           ```
+           GET http://localhost:8080/messages/allsent/jd1
+           ```
+           ```
+           GET http://localhost:8080/messages/allreceived/jd2
+           ```
+           ```
+           GET http://localhost:8080/messages/received/jd1?receiverUserId=jd3
+           ```
+
+6. Kafka is enabled in the application with its related configuration in application.properties file at
+   lets-text-app/src/main/resources/application.properties location.
+   All the sent messages through the REST API above are logged in the application console logs when consumed by the
+   kafka consumer.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
