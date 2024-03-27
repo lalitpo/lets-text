@@ -20,19 +20,15 @@ import static org.mockito.Mockito.*;
 
 class UserMessagingServiceTests {
 
+    private final Message messageMock = new Message("testUser1", "testUser2");
+    private final User userMock1 = new User("testUser1");
+    private final User userMock2 = new User("testUser2");
     @Mock
     private UserMessagesRepository userMessagesRepositoryMock;
-
     @Mock
     private UserAccountRepository userAccountRepositoryMock;
-
     @InjectMocks
     private UserMessagingService userMessagingServiceMock;
-
-    private static final String TEST_USER_1 = "testUser1";
-    private static final String TEST_USER_2 = "testUser2";
-    private static final String TEST_USER_3 = "testUser3";
-
 
     @BeforeEach
     public void setup() {
@@ -41,72 +37,59 @@ class UserMessagingServiceTests {
 
     @Test
     void whenGetAllSentMessagesThenReturnAllSentMessages() {
-        Message message = new Message();
-        message.setSenderId(TEST_USER_1);
-        when(userMessagesRepositoryMock.findBySenderId(TEST_USER_1)).thenReturn(Collections.singletonList(message));
+        when(userAccountRepositoryMock.findById(userMock1.getUserNickName())).thenReturn(Optional.of(userMock1));
+        when(userMessagesRepositoryMock.findBySenderId(userMock1.getUserNickName())).thenReturn(Collections.singletonList(messageMock));
 
-        List<Message> result = userMessagingServiceMock.getAllSentMessages(TEST_USER_1);
+        List<Message> result = userMessagingServiceMock.getAllSentMessages(userMock1.getUserNickName());
 
         assertEquals(1, result.size());
     }
 
     @Test
     void whenGetAllReceivedMessagesThenReturnAllReceivedMessages() {
-        Message message = new Message();
-        message.setReceiverId(TEST_USER_1);
-        when(userMessagesRepositoryMock.findByReceiverId(TEST_USER_1)).thenReturn(Collections.singletonList(message));
 
-        List<Message> result = userMessagingServiceMock.getAllReceivedMessages(TEST_USER_1);
+        when(userAccountRepositoryMock.findById(userMock1.getUserNickName())).thenReturn(Optional.of(userMock1));
+        when(userMessagesRepositoryMock.findByReceiverId(userMock1.getUserNickName())).thenReturn(Collections.singletonList(messageMock));
+
+        List<Message> result = userMessagingServiceMock.getAllReceivedMessages(userMock1.getUserNickName());
 
         assertEquals(1, result.size());
     }
 
     @Test
     void whenUserDoesNotExistsThenThrowsException() {
-        Message message = new Message();
-        message.setSenderId(TEST_USER_1);
-        message.setReceiverId(TEST_USER_2);
 
-        when(userAccountRepositoryMock.findById(TEST_USER_1)).thenReturn(Optional.empty());
-        when(userAccountRepositoryMock.findById(TEST_USER_2)).thenReturn(Optional.empty());
+        when(userAccountRepositoryMock.findById(userMock1.getUserNickName())).thenReturn(Optional.empty());
+        when(userAccountRepositoryMock.findById(userMock2.getUserNickName())).thenReturn(Optional.empty());
 
-        assertThrows(Exception.class, () -> userMessagingServiceMock.sendMessage(message));
-        assertThrows(Exception.class, () -> userMessagingServiceMock.sendMessage(message));
+        assertThrows(Exception.class, () -> userMessagingServiceMock.sendMessage(messageMock));
+        assertThrows(Exception.class, () -> userMessagingServiceMock.sendMessage(messageMock));
 
     }
 
     @Test
     void whenSenderIsReceiverThenThrowsException() {
-        Message message = new Message();
-        message.setSenderId(TEST_USER_1);
-        message.setReceiverId(TEST_USER_1);
 
-        assertThrows(Exception.class, () -> userMessagingServiceMock.sendMessage(message));
+        assertThrows(Exception.class, () -> userMessagingServiceMock.sendMessage(messageMock));
     }
 
     @Test
     void whenSenderAndReceiverCorrectThenSendMessage() throws Exception {
-        Message message = new Message();
-        message.setSenderId(TEST_USER_1);
-        message.setReceiverId(TEST_USER_2);
 
-        when(userAccountRepositoryMock.findById(TEST_USER_1)).thenReturn(Optional.of(new User()));
-        when(userAccountRepositoryMock.findById(TEST_USER_2)).thenReturn(Optional.of(new User()));
+        when(userAccountRepositoryMock.findById(userMock1.getUserNickName())).thenReturn(Optional.of(userMock1));
+        when(userAccountRepositoryMock.findById(userMock2.getUserNickName())).thenReturn(Optional.of(userMock2));
 
-        userMessagingServiceMock.sendMessage(message);
+        userMessagingServiceMock.sendMessage(messageMock);
 
-        verify(userMessagesRepositoryMock, times(1)).save(message);
+        verify(userMessagesRepositoryMock, times(1)).save(messageMock);
     }
 
     @Test
     void whenSenderExistsAndReceiverDoesNotExistsThenThrowsException() {
-        Message message = new Message();
-        message.setSenderId(TEST_USER_1);
-        message.setReceiverId(TEST_USER_3);
 
-        when(userAccountRepositoryMock.findById(TEST_USER_1)).thenReturn(Optional.of(new User()));
-        when(userAccountRepositoryMock.findById(TEST_USER_3)).thenReturn(Optional.empty());
+        when(userAccountRepositoryMock.findById(userMock1.getUserNickName())).thenReturn(Optional.of(new User()));
+        when(userAccountRepositoryMock.findById(userMock2.getUserNickName())).thenReturn(Optional.empty());
 
-        assertThrows(Exception.class, () -> userMessagingServiceMock.sendMessage(message));
+        assertThrows(Exception.class, () -> userMessagingServiceMock.sendMessage(messageMock));
     }
 }

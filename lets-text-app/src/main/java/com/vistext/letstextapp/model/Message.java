@@ -4,11 +4,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.Date;
 
-@Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,4 +21,9 @@ public class Message {
     private String receiverId;
     private String messageContent;
     private Date messageSentTime;
+
+    public Message(String senderId, String receiverId) {
+        this.senderId = senderId;
+        this.receiverId = receiverId;
+    }
 }

@@ -15,14 +15,11 @@ import static org.mockito.Mockito.*;
 
 class UserAccountServiceTest {
 
+    private final User userMock1 = new User("testUser1");
     @Mock
     private UserAccountRepository userAccountRepositoryMock;
-
     @InjectMocks
     private UserAccountService userAccountServiceMock;
-
-    private static final String TEST_USER_1 = "testUser1";
-    private static final String TEST_USER_2 = "testUser2";
 
     @BeforeEach
     public void setup() {
@@ -31,23 +28,19 @@ class UserAccountServiceTest {
 
     @Test
     void whenUserDoesNotExistCreatesUser() throws Exception {
-        User user = new User();
-        user.setUserNickName(TEST_USER_1);
 
-        when(userAccountRepositoryMock.findById(TEST_USER_1)).thenReturn(Optional.empty());
+        when(userAccountRepositoryMock.findById(userMock1.getUserNickName())).thenReturn(Optional.empty());
 
-        userAccountServiceMock.createUserAccount(user);
+        userAccountServiceMock.createUserAccount(userMock1);
 
-        verify(userAccountRepositoryMock, times(1)).save(user);
+        verify(userAccountRepositoryMock, times(1)).save(userMock1);
     }
 
     @Test
     void whenUserExistsThrowsException() {
-        User user = new User();
-        user.setUserNickName(TEST_USER_1);
 
-        when(userAccountRepositoryMock.findById(TEST_USER_1)).thenReturn(Optional.of(user));
+        when(userAccountRepositoryMock.findById(userMock1.getUserNickName())).thenReturn(Optional.of(userMock1));
 
-        assertThrows(Exception.class, () -> userAccountServiceMock.createUserAccount(user));
+        assertThrows(Exception.class, () -> userAccountServiceMock.createUserAccount(userMock1));
     }
 }

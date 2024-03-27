@@ -11,6 +11,12 @@ public class UserAccountService {
     @Autowired
     private UserAccountRepository userAccountRepository;
 
+    /**
+     * Creates a user account.
+     *
+     * @param user the user object containing the user's information
+     * @throws Exception if the user with the same nickname already exists
+     */
     public void createUserAccount(User user) throws Exception {
         if (userAccountRepository.findById(user.getUserNickName()).isPresent()) {
             throw new Exception("User with " + user.getUserNickName() + " already exists");

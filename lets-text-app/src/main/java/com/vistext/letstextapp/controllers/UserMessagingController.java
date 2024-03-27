@@ -2,6 +2,8 @@ package com.vistext.letstextapp.controllers;
 
 import com.vistext.letstextapp.model.Message;
 import com.vistext.letstextapp.service.UserMessagingService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,8 @@ import java.util.List;
 @RequestMapping("/messages")
 public class UserMessagingController {
 
+    private static final Logger logger = LogManager.getLogger();
+
     @Autowired
     private UserMessagingService messageService;
 
@@ -20,26 +24,42 @@ public class UserMessagingController {
         try {
             messageService.sendMessage(message);
         } catch (Exception e) {
+            logger.error(e.getMessage());
             return ResponseEntity.badRequest().body("Message sending failed : " + e.getMessage());
         }
         return ResponseEntity.ok("Message sent successfully");
     }
 
     @GetMapping("/allsent/{userId}")
-    public ResponseEntity<List<Message>> getSentMessages(@PathVariable String userId) {
-        List<Message> sentMessages = messageService.getAllSentMessages(userId);
-        return ResponseEntity.ok(sentMessages);
+    public ResponseEntity<Object> getSentMessages(@PathVariable String userId) {
+        try {
+            List<Message> sentMessages = messageService.getAllSentMessages(userId);
+            return ResponseEntity.ok(sentMessages);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().body("Message sending failed : " + e.getMessage());
+        }
     }
 
     @GetMapping("/allreceived/{userId}")
-    public ResponseEntity<List<Message>> getReceivedMessages(@PathVariable String userId) {
-        List<Message> receivedMessages = messageService.getAllReceivedMessages(userId);
-        return ResponseEntity.ok(receivedMessages);
+    public ResponseEntity<Object> getReceivedMessages(@PathVariable String userId) {
+        try {
+            List<Message> receivedMessages = messageService.getAllReceivedMessages(userId);
+            return ResponseEntity.ok(receivedMessages);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().body("Message sending failed : " + e.getMessage());
+        }
     }
 
     @GetMapping("/received/{userId}")
-    public ResponseEntity<List<Message>> getReceivedMessages(@PathVariable String userId, @RequestParam String receiverUserId) {
-        List<Message> receivedMessages = messageService.getReceivedMessagesFromUser(userId, receiverUserId);
-        return ResponseEntity.ok(receivedMessages);
+    public ResponseEntity<Object> getReceivedMessages(@PathVariable String userId, @RequestParam String receiverUserId) {
+        try {
+            List<Message> receivedMessages = messageService.getReceivedMessagesFromUser(userId, receiverUserId);
+            return ResponseEntity.ok(receivedMessages);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().body("Message sending failed : " + e.getMessage());
+        }
     }
 }

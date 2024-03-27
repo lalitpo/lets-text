@@ -1,12 +1,10 @@
 <a name="readme-top"></a>
 
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
 <br />
 <div style="text-align: center;">
   <h3 align="center">Let's Text</h3>
   <p align="center">
-    A backend of a messaging application.
+    A backend of a text messaging application.
     <br />
     <a href="https://github.com/lalitpo/lets-text/issues">Report Bug</a> 
   </p>
@@ -52,10 +50,10 @@ Below functionalities are implemented in the project:
 
 [![My Skills](https://skillicons.dev/icons?i=java)](https://www.oracle.com/java/)
 [![My Skills](https://skillicons.dev/icons?i=spring)](https://www.spring.io/)
+[![My Skills](https://skillicons.dev/icons?i=maven)](https://maven.apache.org/)
 [![My Skills](https://skillicons.dev/icons?i=postgres)](https://www.postgresql.org/)
 [![My Skills](https://skillicons.dev/icons?i=kafka)](https://kafka.apache.org/)
 [![My Skills](https://skillicons.dev/icons?i=docker)](https://www.docker.com/)
-[![My Skills](https://skillicons.dev/icons?i=maven)](https://maven.apache.org/)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -67,7 +65,7 @@ To correctly import and run this project locally, please follow below guidelines
 As mentioned above in the "Built with" section, please have Java installed on your system.
 You can use [homebrew](https://brew.sh) or straightforward Installation from their respective website's homepage.
 
-You can use any IDE like [IntelliJ](https://www.jetbrains.com/idea/) [VS Code](https://code.visualstudio.com), etc.
+You can use any IDE like [IntelliJ](https://www.jetbrains.com/idea/), [VS Code](https://code.visualstudio.com), etc.
 
 ### Installation
 
@@ -134,19 +132,32 @@ Below is an example of how you can set up the project on your local machine.
            GET http://localhost:8080/messages/received/jd1?receiverUserId=jd3
            ```
 
-6. Kafka is enabled in the application with its related configuration in application.properties file at
+6. Kafka is enabled (kafka.enabled=true) in the application with its related configuration in application.properties
+   file at
    lets-text-app/src/main/resources/application.properties location.
    All the sent messages through the REST API above are logged in the application console logs when consumed by the
    kafka consumer.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+## Improvements
 
+1. Have a separate repository or project of Kafka Client, to separate the module. This can help to bring in any changes
+   in configuration, new kafka client for each of the calling (producer) application, and also for the maintenance of
+   the kafka cluster flow.
+2. A discussion needs to be done with regards to the request and response structure of the REST APIs. This can help in
+   standardizing the what content to return.
+3. An integration testing mechanism to with the calling application (or front end of the messaging application).
+4. A fallback mechanism to upload the messages when the kafka consumer is down or cannot process the messages or any
+   other reasons.
+5. A custom exception class for the application to handle the exceptions and return the error messages in a better way.
+6. A constant class to have all the constants used in the application.
 
 ## Contact
 ### Developer :
-[Lalit Poddar](https://www.linkedin.com/in/lalit-poddar/)
+
+[Lalit Poddar](mailto:lalit.poddar@gmail.com)  
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -155,10 +166,4 @@ Below is an example of how you can set up the project on your local machine.
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links --> 
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/lalit-poddar/
-[Python]: https://www.python.org/static/img/python-logo@2x.png
-[python-url]: https://www.python.org/
-[R]: https://www.r-project.org/Rlogo.png
-[R-url]: https://www.r-project.org/
-[Matlab]: https://play-lh.googleusercontent.com/UB0D2bAS6M4gGtaXPbhD8zK6bRrw_KkTeNMuZ_fkx32WC_OPPeQcKmH7AiID41xDc2k=w480-h960
-[matlab-url]: https://in.mathworks.com/products/matlab.html/
 
